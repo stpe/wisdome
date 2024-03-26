@@ -19,8 +19,8 @@
   let w = canvas.width / size;
   var t = 0;
 
-  function main() {
-    t++;
+  function main(dt) {
+    let t = dt / 500;
 
     for (let y = 0; y < h; y++) {
       for (let x = 0; x < w; x++) {
@@ -37,13 +37,13 @@
         ) / 4;
 
         let v = (
-          128.0 + (128.0 * Math.sin(x / 16.0))
+          128.0 + (128.0 * Math.sin((t / 7.0) + x / 16.0))
           + 128.0 + (128.0 * Math.sin(y / 32.0))
-          + 128.0 + (128.0 * Math.sin(Math.sqrt(((x - w / 2.0) * (x - w / 2.0) + (y - h / 2.0) * (y - h / 2.0))) / 8.0))
+          + 128.0 + (128.0 * Math.sin(t + Math.sqrt(((x - w / 2.0) * (x - w / 2.0) + (y - h / 2.0) * (y - h / 2.0))) / 8.0))
           + 128.0 + (128.0 * Math.sin(Math.sqrt((x * x + y * y)) / 8.0))
         ) / 4;
 
-        let color = palette[(Math.round(v) + paletteShift) % palette.length];
+        let color = palette[(Math.round(v + paletteShift)) % palette.length];
 
         draw(x, y, color);
       }
@@ -62,12 +62,13 @@
 
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
 
-    gradient.addColorStop(0, "black");
-    gradient.addColorStop(0.2, "blue");
-    gradient.addColorStop(0.5, "red");
-    gradient.addColorStop(0.7, "yellow");
-    gradient.addColorStop(0.9, "green");
-    gradient.addColorStop(1.0, "black");
+    gradient.addColorStop(0.0, "#0000");
+    gradient.addColorStop(0.1, "#ffff00");
+    gradient.addColorStop(0.2, "#000000");
+    gradient.addColorStop(0.4, "#ff00ff");
+    gradient.addColorStop(0.6, "#000000");
+    gradient.addColorStop(0.8, "#00ffff");
+    gradient.addColorStop(1.0, "#000000");
 
     // Set the fill style and draw a rectangle
     ctx.fillStyle = gradient;
