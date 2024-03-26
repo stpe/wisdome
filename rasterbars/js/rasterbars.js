@@ -8,7 +8,7 @@
     // bar parameters
     var resolution = 20;
     var speed = 0.01;
-    var size = 100;
+    var size = Math.round(canvas.height / 10);
     var position = canvas.height / 2 - size;
     var step = Math.PI * 2 / resolution;
     var radius = position;
