@@ -18,18 +18,24 @@
   let h = canvas.height / size;
   let w = canvas.width / size;
 
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      let v = (
-        + 128 + (128 * Math.sin(x / 8.0))
-        + 128 + (128 * Math.sin(y / 8.0))
-      ) / 2;
+  function main() {
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        let v = (
+          + 128 + (128 * Math.sin(x / 8.0))
+          + 128 + (128 * Math.sin(y / 8.0))
+        ) / 2;
 
-      let color = palette[(Math.round(v) + paletteShift) % palette.length];
+        let color = palette[(Math.round(v) + paletteShift) % palette.length];
 
-      draw(x, y, color);
+        draw(x, y, color);
+      }
     }
+
+    paletteShift++;
+    requestAnimationFrame(main);
   }
+  requestAnimationFrame(main);
 
   function getGradient(canvasId) {
     var canvas = document.getElementById(canvasId);
