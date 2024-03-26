@@ -3,7 +3,7 @@
   var canvas = document.getElementById(canvasId);
   canvas.width = window.innerWidth; // canvas.clientWidth;
   canvas.height = window.innerHeight; // canvas.clientHeight;
-  var ctx = canvas.getContext('2d');
+  var ctx = canvas.getContext("2d", { alpha: false });
 
   let palette = getGradient("gradient");
   let paletteShift = 0;
@@ -17,14 +17,31 @@
 
   let h = canvas.height / size;
   let w = canvas.width / size;
+  var t = 0;
 
   function main() {
+    t++;
+
     for (let y = 0; y < h; y++) {
       for (let x = 0; x < w; x++) {
-        let v = (
-          + 128 + (128 * Math.sin(x / 8.0))
+        let v2 = (
+          128 + (128 * Math.sin(x / 8.0))
           + 128 + (128 * Math.sin(y / 8.0))
         ) / 2;
+
+        let v3 = (
+          128.0 + (128.0 * Math.sin(x / 16.0))
+          + 128.0 + (128.0 * Math.sin(y / 8.0))
+          + 128.0 + (128.0 * Math.sin((x + y + t) / 16.0))
+          + 128.0 + (128.0 * Math.sin(Math.sqrt(x * x + y * y) / 8.0))
+        ) / 4;
+
+        let v = (
+          128.0 + (128.0 * Math.sin(x / 16.0))
+          + 128.0 + (128.0 * Math.sin(y / 32.0))
+          + 128.0 + (128.0 * Math.sin(Math.sqrt(((x - w / 2.0) * (x - w / 2.0) + (y - h / 2.0) * (y - h / 2.0))) / 8.0))
+          + 128.0 + (128.0 * Math.sin(Math.sqrt((x * x + y * y)) / 8.0))
+        ) / 4;
 
         let color = palette[(Math.round(v) + paletteShift) % palette.length];
 
@@ -46,8 +63,10 @@
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
 
     gradient.addColorStop(0, "black");
+    gradient.addColorStop(0.2, "blue");
     gradient.addColorStop(0.5, "red");
     gradient.addColorStop(0.7, "yellow");
+    gradient.addColorStop(0.9, "green");
     gradient.addColorStop(1.0, "black");
 
     // Set the fill style and draw a rectangle
